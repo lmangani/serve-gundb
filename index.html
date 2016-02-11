@@ -3,23 +3,40 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <title>gundb</title>
+        <title>gundb demo</title>
+
+        <style media="screen">
+            body {
+                font-family: sans-serif;
+            }
+        </style>
     </head>
+
     <body>
       <script src="https://rawgit.com/amark/gun/master/gun.js"></script>
-      <script src="ex1.js"></script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+      <script src="http://marvl.infotech.monash.edu/webcola/cola.v3.min.js"></script>
+      <script src="http://maurizzzio.github.io/greuler/greuler.min.js"></script>
+
+      <script src="gEx1.js"></script>
       <script src="gIntrospect.js"></script>
+      <script src="gGraph.js"></script>
+
+<code><pre>
+open console and use already initialized Gun instance at var g.
+</code></pre>
+
+      <div id="graph"></div>
 
       <script>
-	g.get('toni').val(p);
-	
-	setTimeout(function() {
-		var gi = gunIntrospect(g);
-		window.gi = gi;
-		gi.logAll();
+        setTimeout(function() {
+            var gi = gIntrospect(g);
+            window.gi = gi;
+            gi.logAll();
 
-		console.log( gi.classify( g._.graph.toni ) );
-	}, 2000);
+            gGraph(g, gi);
+        }, 2000);
       </script>
     </body>
 </html>

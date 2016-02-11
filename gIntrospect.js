@@ -14,81 +14,81 @@ each object:
         its hash itself is at _.# (I read it as id/hash of my father)
 */
 
-function gunIntrospect(g) {
+function gIntrospect(g) {
 
-function getFirstNonUnderscore(o) {
-    for (var k in o) {
-        if (k !== '_') { return k; }
+    function getFirstNonUnderscore(o) {
+        for (var k in o) {
+            if (k !== '_') { return k; }
+        }
     }
-}
 
-function _classify(o) {
-    if (typeof o === 'string') {
-        o = g._.graph[o];
-    }
-    
-    var isKey = !!o._.key;
-    if (isKey) {
-        return {
-            isKey: true,
-            val: getFirstNonUnderscore(o)
-        };
-    }
-    else {
-        var primitives = {};
-        var references = {};
-        var v, k;
-        for (k in o) {
-            if (k === '_' || k === '#') { continue; }
-            v = o[k];
-            if (typeof v === 'object') {
-                references[k] = v['#'];
-            }
-            else {
-                primitives[k] = v;
-            }
+    function _classify(o) {
+        if (typeof o === 'string') {
+            o = g._.graph[o];
         }
 
-        if (Object.keys(primitives).length === 0) {
+        var isKey = !!o._.key;
+        if (isKey) {
             return {
-                isSet: true,
-                val: Object.keys(references)
+                isKey: true,
+                val: getFirstNonUnderscore(o)
             };
         }
-        return {
-            isObj: true,
-            val: {
-                primitives: primitives,
-                references: references
+        else {
+            var primitives = {};
+            var references = {};
+            var v, k;
+            for (k in o) {
+                if (k === '_' || k === '#') { continue; }
+                v = o[k];
+                if (typeof v === 'object') {
+                    references[k] = v['#'];
+                }
+                else {
+                    primitives[k] = v;
+                }
             }
-        };
-    }
-}
 
-function classify(k, oo) {
-    var o = _classify(oo);
-    if (o.isKey) {
-        console.log('key', k, '->', o.val);
+            if (Object.keys(primitives).length === 0) {
+                return {
+                    isSet: true,
+                    val: Object.keys(references)
+                };
+            }
+            return {
+                isObj: true,
+                val: {
+                    primitives: primitives,
+                    references: references
+                }
+            };
+        }
     }
-    else if (o.isSet) {
-        console.log('set', k, '->', o.val);
-    }
-    else {
-        console.log('obj', k, '->', o.val);
-    }
-}
 
-function logAll() {
-    console.log('----');
-    var gr = g._.graph;
-    for (var k in gr) {
-        classify(k, gr[k]);
+    function classify(k, oo) {
+        var o = _classify(oo);
+        if (o.isKey) {
+            console.log('key', k, '->', o.val);
+        }
+        else if (o.isSet) {
+            console.log('set', k, '->', o.val);
+        }
+        else {
+            console.log('obj', k, '->', o.val);
+        }
     }
-}
 
-return {
-	classify: _classify,
-	logAll:   logAll
-};
+    function logAll() {
+        console.log('----');
+        var gr = g._.graph;
+        for (var k in gr) {
+            classify(k, gr[k]);
+        }
+    }
+
+    return {
+    	classify: _classify,
+    	logAll:   logAll
+    };
 
 }
