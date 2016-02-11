@@ -15,6 +15,7 @@
 	
 	setTimeout(function() {
 		var gi = gunIntrospect(g);
+		window.gi = gi;
 		gi.logAll();
 
 		console.log( gi.classify( g._.graph.toni ) );

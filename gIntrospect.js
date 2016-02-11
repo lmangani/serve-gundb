@@ -23,6 +23,10 @@ function getFirstNonUnderscore(o) {
 }
 
 function _classify(o) {
+    if (typeof o === 'string') {
+        o = g._.graph[o];
+    }
+    
     var isKey = !!o._.key;
     if (isKey) {
         return {
