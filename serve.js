@@ -7,7 +7,6 @@ var http = require('http');
 var fs = require('fs');
 
 var port = 9966;
-var ip = '127.0.0.1';
 
 var Gun = require('gun');
 var gun = Gun({ 
@@ -24,6 +23,6 @@ var server = http.createServer(function(req, res){
 	}).pipe(res); // stream
 });
 gun.wsp(server);
-server.listen(port, ip);
+server.listen(port);
 
 console.log('Server started on port ' + port + ' with /gun');
