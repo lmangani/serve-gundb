@@ -8,5 +8,17 @@
     <body>
       <script src="https://rawgit.com/amark/gun/master/gun.js"></script>
       <script src="ex1.js"></script>
+      <script src="gIntrospect.js"></script>
+
+      <script>
+	g.get('toni').val(p);
+	
+	setTimeout(function() {
+		var gi = gunIntrospect(g);
+		gi.logAll();
+
+		console.log( gi.classify( g._.graph.toni ) );
+	}, 2000);
+      </script>
     </body>
 </html>
