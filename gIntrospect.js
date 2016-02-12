@@ -86,9 +86,19 @@ function gIntrospect(g) {
         }
     }
 
+    function visitAll(cb) {
+        var k, o, gr = g._.graph;
+        for (k in gr) {
+            o = _classify(gr[k]);
+            o.id = k;
+            cb(o);
+        }
+    }
+
     return {
     	classify: _classify,
-    	logAll:   logAll
+    	logAll:   logAll,
+        visitAll: visitAll
     };
 
 }

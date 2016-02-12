@@ -29,8 +29,8 @@ function setUpExample() {
     a.path(E_HUSBAND_OF).put(b);
     b.path(E_WIFE_OF   ).put(a);
 
-    g.get(N_ANNE).val(p);
-    g.get(N_ANNE).path(E_WIFE_OF).val(p);
+    //g.get(N_ANNE).val(p);
+    //g.get(N_ANNE).path(E_WIFE_OF).val(p);
 
     var c, d;
     c = g.get(N_RICK).put({name:'rick doe', age:5, gender:'m'});
@@ -39,8 +39,13 @@ function setUpExample() {
     a.path(E_CHILDREN).set(c);
     a.path(E_CHILDREN).set(d);
 
-    g.get(N_ANNE).val(p);
-    g.get(N_ANNE).path(E_CHILDREN).map().val(p);
+    var e;
+    a.path(E_CHILDREN).val(function(e) {
+        b.path(E_CHILDREN).put(e);
+    });
+
+    //g.get(N_ANNE).val(p);
+    //g.get(N_ANNE).path(E_CHILDREN).map().val(p);
 }
 
 function summonExample() {
@@ -51,5 +56,5 @@ function summonExample() {
      .path('children');
 }
 
-//setUpExample();
-summonExample();
+setUpExample();
+//summonExample();
