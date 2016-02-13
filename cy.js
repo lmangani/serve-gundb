@@ -1,14 +1,12 @@
-function gGraph(g, gi) {
+function gGraph(g, gi, parentEl) {
     'use strict';
 
-    var nodes = [
-        //{data: {id:'n1', label:'N1'}, classes:'outline'},
-        //{data: {id:'n2', label:'N2'}, classes:'background'}
-    ];
-
-    var edges = [
-        //{data: {id:'e1', source:'n1', target:'n2', label:'E1'}}
-    ];
+    if (!parentEl) {
+        parentEl = document.body;
+    }
+    else if (typeof parentEl === 'string') {
+        parentEl = document.querySelector(parentEl);
+    }
 
     var blackC = '#000'; var whiteC = '#FFF';
     var objC = '#FAA'; var objC2 = '#DBB';
@@ -126,44 +124,66 @@ function gGraph(g, gi) {
         }
     }
 
-    gi.visitAll(function(o) {
-        var cls = ( o.isObj ? 'obj' : (o.isSet ? 'set' : 'key') );
+    function render() {
 
-        if (o.isKey) {
-            edges.push({data:{source:o.id, target:o.val}, classes:'keye dashed'});
-        }
-        else if (o.isSet) {
-            o.val.forEach(function(ref) {
-                edges.push({data:{source:o.id, target:ref}, classes:'sete dashed'});
-            });
-        }
-        else {
-            forObj(o.val.primitives, function(v, k) {
-                var id = genId();
-                edges.push({data:{source:o.id, target:id, label:k}, classes:'obje'});
-                nodes.push({data:{id:id, label:JSON.stringify(v)}, classes:'primn'});
-            });
-            forObj(o.val.references, function(v, k) {
-                var id = genId();
-                edges.push({data:{source:o.id, target:v, label:k}, classes:'obje dashed'});
-            });
+        var nodes = [
+            //{data: {id:'n1', label:'N1'}, classes:'outline'},
+            //{data: {id:'n2', label:'N2'}, classes:'background'}
+        ];
+
+        var edges = [
+            //{data: {id:'e1', source:'n1', target:'n2', label:'E1'}}
+        ];
+
+        gi.visitAll(function(o) {
+            var cls = ( o.isObj ? 'obj' : (o.isSet ? 'set' : 'key') );
+
+            if (o.isKey) {
+                edges.push({data:{source:o.id, target:o.val}, classes:'keye dashed'});
+            }
+            else if (o.isSet) {
+                o.val.forEach(function(ref) {
+                    edges.push({data:{source:o.id, target:ref}, classes:'sete dashed'});
+                });
+            }
+            else {
+                forObj(o.val.primitives, function(v, k) {
+                    var id = genId();
+                    edges.push({data:{source:o.id, target:id, label:k}, classes:'obje'});
+                    nodes.push({data:{id:id, label:JSON.stringify(v)}, classes:'primn'});
+                });
+                forObj(o.val.references, function(v, k) {
+                    var id = genId();
+                    edges.push({data:{source:o.id, target:v, label:k}, classes:'obje dashed'});
+                });
+            }
+
+            var d = {id:o.id};
+            if (cls === 'key') { d.label = o.id; };
+            nodes.push({data:d, classes:cls+'n'});
+        });
+
+        if (parentEl.firstChild) {
+            parentEl.removeChild(parentEl.firstChild);
         }
 
-        var d = {id:o.id};
-        if (cls === 'key') { d.label = o.id; };
-        nodes.push({data:d, classes:cls+'n'});
-    });
+        cytoscape({
+            container: parentEl,
+            elements: {
+                nodes: nodes,
+                edges: edges
+            },
+            layout: {
+                name: 'cose-bilkent', // https://github.com/cytoscape/cytoscape.js-cose-bilkent#api
+                randomize: true
+            },
+            style: style
+        });
 
-    cytoscape({
-        container: document.getElementById('graph'),
-        elements: {
-            nodes: nodes,
-            edges: edges
-        },
-        layout: {
-            name: 'cose-bilkent' // https://github.com/cytoscape/cytoscape.js-cose-bilkent#api
-        },
-        style: style
-    });
+    }
+
+    render();
+
+    return render;
 
 }
