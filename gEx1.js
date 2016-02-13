@@ -3,10 +3,12 @@
 
 // auxiliary functions to apply to .val()
 var p = function(v) { console.log(v); }; // prints to console
-var assign = function(_v) { window.v = _v; } // assigns to global v
 
-var g = Gun(location.origin + '/gun');
-//var g = Gun();
+localStorage.clear(); // kinda evil, just to discard eventual presence of old demo data
+
+//var g = Gun(location.origin + '/gun'); // sync with server peer
+var g = Gun(); // volatile demo
+
 
 
 function setUpExample() {
@@ -40,6 +42,8 @@ function setUpExample() {
     g.get(N_ANNE).path(E_CHILDREN).put( g.get(S_CHILDREN_JOHN_ANNE) );
 }
 
+
+
 function summonExample() {
     g
     .get('person/anne')
@@ -49,5 +53,7 @@ function summonExample() {
     .get('set/children_of/person_john/person_anne');
 }
 
-//setUpExample();
-summonExample();
+
+
+setUpExample();
+//summonExample();
