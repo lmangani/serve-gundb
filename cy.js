@@ -1,0 +1,169 @@
+function gGraph(g, gi) {
+    'use strict';
+
+    var nodes = [
+        //{data: {id:'n1', label:'N1'}, classes:'outline'},
+        //{data: {id:'n2', label:'N2'}, classes:'background'}
+    ];
+
+    var edges = [
+        //{data: {id:'e1', source:'n1', target:'n2', label:'E1'}}
+    ];
+
+    var blackC = '#000'; var whiteC = '#FFF';
+    var objC = '#FAA'; var objC2 = '#DBB';
+    var keyC = '#AAF'; var keyC2 = '#BBD';
+    var setC = '#AFA'; var setC2 = '#BDB';
+    var primC = '#DDD';
+
+    var style = [ // http://js.cytoscape.org/#style/property-types
+        {
+            selector: '*',
+            style: {
+                content: 'data(label)',
+                'font-size': 6
+            }
+        },
+        {
+            selector: 'node',
+            style: {
+                'text-valign': 'center',
+                'text-halign': 'center',
+                width:  10,
+                height: 10
+            }
+        },
+        {
+            selector: 'edge',
+            style: {
+                'text-valign': 'center',
+                'text-halign': 'center',
+                width: 1,
+                'target-arrow-shape': 'triangle',
+                //'curve-style': 'unbundled-bezier'
+            }
+        },
+        {
+            selector: '.primn',
+            style: {
+                'border-color': primC,
+                'border-width': 0.5,
+                'background-color': whiteC,
+                shape: 'roundrectangle',
+                width: 'label',
+                height: 7,
+                'padding-left':  1,
+                'padding-right': 1
+            }
+        },
+        {
+            selector: '.objn',
+            style: {
+                'background-color': objC2,
+                'text-opacity': 0.5
+            }
+        },
+        {
+            selector: '.obje',
+            style: {
+                'font-weight': 'bold',
+                'line-color':         objC,
+                'target-arrow-color': objC
+            }
+        },
+        {
+            selector: '.keyn',
+            style: {
+                shape: 'roundrectangle',
+                'background-color': keyC2,
+                'font-size': 9,
+                'font-weight': 400,
+                width: 'label',
+                'padding-left':  1,
+                'padding-right': 1,
+                height: 10
+            }
+        },
+        {
+            selector: '.keye',
+            style: {
+                'line-color':         keyC,
+                'target-arrow-color': keyC
+            }
+        },
+        {
+            selector: '.setn',
+            style: {
+                'background-color': setC2,
+                shape: 'hexagon',
+                width:  23,
+                height: 20
+            }
+        },
+        {
+            selector: '.sete',
+            style: {
+                'line-color':         setC,
+                'target-arrow-color': setC
+            }
+        },
+        {
+            selector: '.dashed',
+            style: {
+                'line-style': 'dashed'
+            }
+        }
+    ];
+
+    function genId() {
+        return ( ~~(Math.random() * Math.pow(32, 6)) ).toString(32);
+    }
+
+    function forObj(o, cb) {
+        for (var k in o) {
+            if (!o.hasOwnProperty(k)) { continue; }
+            cb(o[k], k);
+        }
+    }
+
+    gi.visitAll(function(o) {
+        var cls = ( o.isObj ? 'obj' : (o.isSet ? 'set' : 'key') );
+
+        if (o.isKey) {
+            edges.push({data:{source:o.id, target:o.val}, classes:'keye dashed'});
+        }
+        else if (o.isSet) {
+            o.val.forEach(function(ref) {
+                edges.push({data:{source:o.id, target:ref}, classes:'sete dashed'});
+            });
+        }
+        else {
+            forObj(o.val.primitives, function(v, k) {
+                var id = genId();
+                edges.push({data:{source:o.id, target:id, label:k}, classes:'obje'});
+                nodes.push({data:{id:id, label:JSON.stringify(v)}, classes:'primn'});
+            });
+            forObj(o.val.references, function(v, k) {
+                var id = genId();
+                edges.push({data:{source:o.id, target:v, label:k}, classes:'obje dashed'});
+            });
+        }
+
+        var d = {id:o.id};
+        if (cls === 'key') { d.label = o.id; };
+        nodes.push({data:d, classes:cls+'n'});
+    });
+
+    cytoscape({
+        container: document.getElementById('graph'),
+        elements: {
+            nodes: nodes,
+            edges: edges
+        },
+        layout: {
+            name: 'cose-bilkent' // https://github.com/cytoscape/cytoscape.js-cose-bilkent#api
+        },
+        style: style
+    });
+
+}

@@ -5,6 +5,7 @@
 var p = function(v) { console.log(v); };
 
 var g = Gun(location.origin + '/gun');
+//var g = Gun();
 
 
 function setUpExample() {
@@ -23,14 +24,10 @@ function setUpExample() {
     var a, b;
 
     a = g.get(N_JOHN).put({name:'john doe', age:35, gender:'m'});
-
     b = g.get(N_ANNE).put({name:'anne smith', age:32, gender:'f'});
 
     a.path(E_HUSBAND_OF).put(b);
     b.path(E_WIFE_OF   ).put(a);
-
-    //g.get(N_ANNE).val(p);
-    //g.get(N_ANNE).path(E_WIFE_OF).val(p);
 
     var c, d;
     c = g.get(N_RICK).put({name:'rick doe', age:5, gender:'m'});
@@ -43,18 +40,15 @@ function setUpExample() {
     a.path(E_CHILDREN).val(function(e) {
         b.path(E_CHILDREN).put(e);
     });
-
-    //g.get(N_ANNE).val(p);
-    //g.get(N_ANNE).path(E_CHILDREN).map().val(p);
 }
 
 function summonExample() {
     g.get('person/anne')
-     .get('person/rick')
-     .get('person/elsa')
-     .get('person/john')
-     .path('children');
+    .get('person/rick')
+    .get('person/elsa')
+    .get('person/john')
+    .path('children');
 }
 
-setUpExample();
-//summonExample();
+//setUpExample();
+summonExample();

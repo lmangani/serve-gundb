@@ -6,12 +6,12 @@ g._.graph
 each key is a hash name or label
 
 each object:
-    labels and sets
-        keys are labels, values are hashes to other objects
-        labels have _.key === 1
-    nodes
-        if label was defined, it is set as #
-        its hash itself is at _.# (I read it as id/hash of my father)
+labels and sets
+keys are labels, values are hashes to other objects
+labels have _.key === 1
+nodes
+if label was defined, it is set as #
+its hash itself is at _.# (I read it as id/hash of my father)
 */
 
 function gIntrospect(g) {
@@ -96,8 +96,8 @@ function gIntrospect(g) {
     }
 
     return {
-    	classify: _classify,
-    	logAll:   logAll,
+        classify: _classify,
+        logAll:   logAll,
         visitAll: visitAll
     };
 
