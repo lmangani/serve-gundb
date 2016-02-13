@@ -1,4 +1,6 @@
-dumbest node server supporting gun db.
+# serve-gundb
+
+A [gundb](http://gun.js.org/enterprise/) node server with added utils.
 
 
 ## setup
