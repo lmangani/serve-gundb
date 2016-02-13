@@ -58,7 +58,20 @@ function gGraph(g, gi, parentEl) {
             selector: '.objn',
             style: {
                 'background-color': objC2,
-                'text-opacity': 0.5
+                //'text-opacity': 0.5,
+                'text-wrap': 'wrap'
+            }
+        },
+        {
+            selector: '.multiline',
+            style: {
+                'text-wrap': 'wrap',
+                //'text-halign': 'left',
+                shape: 'rectangle',
+                width:  'label',
+                height: 'label',
+                'padding-left':  2,
+                'padding-right': 2
             }
         },
         {
@@ -74,12 +87,12 @@ function gGraph(g, gi, parentEl) {
             style: {
                 shape: 'roundrectangle',
                 'background-color': keyC2,
-                'font-size': 9,
+                'font-size': 7,
                 'font-weight': 400,
                 width: 'label',
                 'padding-left':  1,
                 'padding-right': 1,
-                height: 10
+                height: 8
             }
         },
         {
@@ -142,6 +155,8 @@ function gGraph(g, gi, parentEl) {
         gi.visitAll(function(o) {
             var cls = ( o.isObj ? 'obj' : (o.isSet ? 'set' : 'key') );
 
+            var nodeText = [];
+
             if (o.isKey) {
                 if (isUnknown(o.val)) { return console.log('key: skipped unknown %s', o.val); }
                 edges.push({data:{source:o.id, target:o.val}, classes:'keye dashed'});
@@ -153,19 +168,27 @@ function gGraph(g, gi, parentEl) {
                 });
             }
             else {
-                forObj(o.val.primitives, function(v, k) {
-                    var id = genId();
-                    edges.push({data:{source:o.id, target:id, label:k}, classes:'obje'});
-                    nodes.push({data:{id:id, label:JSON.stringify(v)}, classes:'primn'});
+                forObj(o.val.primitives, function(primV, attrName) {
+                    /*var id = genId();
+                    edges.push({data:{source:o.id, target:id, label:attrName}, classes:'obje'});
+                    nodes.push({data:{id:id, label:JSON.stringify(primV)}, classes:'primn'});*/
+
+                    nodeText.push( [ attrName, ': ', JSON.stringify(primV) ].join('') );
                 });
-                forObj(o.val.references, function(v, k) {
-                    if (isUnknown(v)) { return console.log('obj: skipped unknown %s', v); }
-                    edges.push({data:{source:o.id, target:v, label:k}, classes:'obje dashed'});
+                forObj(o.val.references, function(ref, attrName) {
+                    if (isUnknown(ref)) { return console.log('obj: skipped unknown %s', ref); }
+                    edges.push({data:{source:o.id, target:ref, label:attrName}, classes:'obje dashed'});
                 });
             }
 
             var d = {id:o.id};
-            if (cls === 'key') { d.label = o.id; };
+            if (cls === 'key') {
+                d.label = o.id;
+            }
+            else if (cls === 'obj' && nodeText.length > 0) {
+                d.label = nodeText.join('\n');
+                cls = 'multiline obj';
+            }
             nodes.push({data:d, classes:cls+'n'});
         });
 

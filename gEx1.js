@@ -1,8 +1,9 @@
 /*global Gun:false, console:false*/
 // https://github.com/amark/gun/wiki/API-(v0.3.x)
 
-
-var p = function(v) { console.log(v); };
+// auxiliary functions to apply to .val()
+var p = function(v) { console.log(v); }; // prints to console
+var assign = function(_v) { window.v = _v; } // assigns to global v
 
 var g = Gun(location.origin + '/gun');
 //var g = Gun();
@@ -15,39 +16,37 @@ function setUpExample() {
     var N_RICK = 'person/rick';
     var N_ELSA = 'person/elsa';
 
+    // sets
+    var S_CHILDREN_JOHN_ANNE = 'set/children_of/person_john/person_anne';
+
     // edges
     var E_HUSBAND_OF = 'husband_of';
     var E_WIFE_OF = 'wife_of';
     var E_CHILDREN = 'children';
 
-    // auxiliary. we can use node.back too
-    var a, b;
+    g.get(N_JOHN).put({name:'john doe', age:35, gender:'m'});
+    g.get(N_ANNE).put({name:'anne smith', age:32, gender:'f'});
 
-    a = g.get(N_JOHN).put({name:'john doe', age:35, gender:'m'});
-    b = g.get(N_ANNE).put({name:'anne smith', age:32, gender:'f'});
+    g.get(N_JOHN).path(E_HUSBAND_OF).put( g.get(N_ANNE) );
+    g.get(N_ANNE).path(E_WIFE_OF   ).put( g.get(N_JOHN) );
 
-    a.path(E_HUSBAND_OF).put(b);
-    b.path(E_WIFE_OF   ).put(a);
+    g.get(N_RICK).put({name:'rick doe', age:5, gender:'m'});
+    g.get(N_ELSA).put({name:'elsa doe', age:8, gender:'f'});
 
-    var c, d;
-    c = g.get(N_RICK).put({name:'rick doe', age:5, gender:'m'});
-    d = g.get(N_ELSA).put({name:'elsa doe', age:8, gender:'f'});
+    g.get(S_CHILDREN_JOHN_ANNE).set( g.get(N_RICK) );
+    g.get(S_CHILDREN_JOHN_ANNE).set( g.get(N_ELSA) );
 
-    a.path(E_CHILDREN).set(c);
-    a.path(E_CHILDREN).set(d);
-
-    var e;
-    a.path(E_CHILDREN).val(function(e) {
-        b.path(E_CHILDREN).put(e);
-    });
+    g.get(N_JOHN).path(E_CHILDREN).put( g.get(S_CHILDREN_JOHN_ANNE) );
+    g.get(N_ANNE).path(E_CHILDREN).put( g.get(S_CHILDREN_JOHN_ANNE) );
 }
 
 function summonExample() {
-    g.get('person/anne')
+    g
+    .get('person/anne')
     .get('person/rick')
     .get('person/elsa')
     .get('person/john')
-    .path('children');
+    .get('set/children_of/person_john/person_anne');
 }
 
 //setUpExample();

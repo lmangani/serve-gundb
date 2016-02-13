@@ -57,6 +57,7 @@ function gIntrospect(g) {
             }
             return {
                 isObj: true,
+                key: o['#'],
                 val: {
                     primitives: primitives,
                     references: references
