@@ -2,6 +2,12 @@
 
 A [gundb](http://gun.js.org/enterprise/) node server with added utils.
 
+Some reading material:
+
+* [Intro to graphs](https://github.com/amark/gun/wiki/Graphs);
+* [gundb 0.3.x API](https://github.com/amark/gun/wiki/API-(v0.3.x));
+* [Design examples](https://github.com/amark/gun/wiki/Design-Examples).
+
 
 ## setup
 
@@ -56,3 +62,9 @@ gi.visitAll( <function> cb )
 var render = gGraph( <gunInstance> g , <gIntrospect> gi, <Element|string> parentEl )
 // renders graph immediately and returns function to render again (doesn't require arguments)
 ```
+
+
+
+## TODOs
+
+* partial graph rendering

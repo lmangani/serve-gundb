@@ -44,6 +44,7 @@ function gGraph(g, gi, parentEl) {
         {
             selector: '.primn',
             style: {
+                'font-family': 'monospace',
                 'border-color': primC,
                 'border-width': 0.5,
                 'background-color': whiteC,
@@ -72,14 +73,17 @@ function gGraph(g, gi, parentEl) {
         {
             selector: '.keyn',
             style: {
+                'font-family': 'Arial Narrow',
                 shape: 'roundrectangle',
                 'background-color': keyC2,
-                'font-size': 9,
+                'font-size': 7,
                 'font-weight': 400,
                 width: 'label',
-                'padding-left':  1,
-                'padding-right': 1,
-                height: 10
+                'padding-left':  1.5,
+                'padding-right': 1.5,
+                'padding-top': 0.5,
+                'padding-bottom': 0.5,
+                height: 8
             }
         },
         {
