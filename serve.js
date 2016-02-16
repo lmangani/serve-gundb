@@ -8,10 +8,9 @@ var PID_FILE = 'SERVER.PID';
 var fs = require('fs');
 var http = require('http');
 var path = require('path');
-//var process = require('http');
 var Gun = require('gun');
 
-console.log('Our process id is %s', process.pid);
+console.log('Process id is %d (stored on %s for convenience)', process.pid, PID_FILE);
 fs.writeFileSync(PID_FILE, '' + process.pid);
 
 var gun = Gun({

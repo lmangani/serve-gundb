@@ -68,3 +68,4 @@ var render = gGraph( <gunInstance> g , <gIntrospect> gi, <Element|string> parent
 ## TODOs
 
 * partial graph rendering
+* TODO list
