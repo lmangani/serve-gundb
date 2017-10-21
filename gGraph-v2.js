@@ -208,8 +208,8 @@ function gGraph(g, gi, parentEl) {
             },
             layout: {
                 name: 'cose-bilkent', // https://github.com/cytoscape/cytoscape.js-cose-bilkent#api
-                randomize: true,
-                fit: false
+                randomize: false,
+                fit: true
             },
             style: style
         });
