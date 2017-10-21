@@ -17,8 +17,8 @@ var gEx1 = {
         g.get(N_JOHN).put({name:'john doe', age:35, gender:'m'});
         g.get(N_ANNE).put({name:'anne smith', age:32, gender:'f'});
 
-        g.get(N_JOHN).path(E_HUSBAND_OF).put( g.get(N_ANNE) );
-        g.get(N_ANNE).path(E_WIFE_OF   ).put( g.get(N_JOHN) );
+        g.get(N_JOHN).get(E_HUSBAND_OF).put( g.get(N_ANNE) );
+        g.get(N_ANNE).get(E_WIFE_OF   ).put( g.get(N_JOHN) );
 
         g.get(N_RICK).put({name:'rick doe', age:5, gender:'m'});
         g.get(N_ELSA).put({name:'elsa doe', age:8, gender:'f'});
@@ -26,8 +26,8 @@ var gEx1 = {
         g.get(S_CHILDREN_JOHN_ANNE).set( g.get(N_RICK) );
         g.get(S_CHILDREN_JOHN_ANNE).set( g.get(N_ELSA) );
 
-        g.get(N_JOHN).path(E_CHILDREN).put( g.get(S_CHILDREN_JOHN_ANNE) );
-        g.get(N_ANNE).path(E_CHILDREN).put( g.get(S_CHILDREN_JOHN_ANNE) );
+        g.get(N_JOHN).get(E_CHILDREN).put( g.get(S_CHILDREN_JOHN_ANNE) );
+        g.get(N_ANNE).get(E_CHILDREN).put( g.get(S_CHILDREN_JOHN_ANNE) );
     },
     summonExample: function() {
         g
